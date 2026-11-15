@@ -81,6 +81,8 @@
         html.light .text-zinc-500 { color:#71717A; }
         html.light .text-zinc-600 { color:#71717A; }
         html.light .text-secondary { color:#BE185D; }
+        :root { --pf-facebook:#3987e5; --pf-shopee:#d95926; --pf-tiktok:#199e70; --pf-other:#8b8b94; --chart-surface:#18181B; }
+        html.light { --pf-facebook:#2a78d6; --pf-shopee:#eb6834; --pf-tiktok:#1baf7a; --pf-other:#71717a; --chart-surface:#FFFFFF; }
         html.light .text-amber-200 { color:#B45309; }
         html.light .text-amber-300 { color:#B45309; }
         html.light .text-amber-400 { color:#B45309; }
@@ -157,6 +159,9 @@
                 <button onclick="switchTab('gallery')" class="nav-btn px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-300 hover:bg-zinc-800 transition flex items-center gap-1.5 shrink-0" data-tab="gallery">
                     <i data-lucide="image" class="w-4 h-4"></i> Galeri
                 </button>
+                <button onclick="switchTab('posts')" class="nav-btn px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-300 hover:bg-zinc-800 transition flex items-center gap-1.5 shrink-0" data-tab="posts">
+                    <i data-lucide="trending-up" class="w-4 h-4"></i> Catatan
+                </button>
                 <button onclick="switchTab('guide')" class="nav-btn px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-300 hover:bg-zinc-800 transition flex items-center gap-1.5 shrink-0" data-tab="guide">
                     <i data-lucide="book-open" class="w-4 h-4"></i> Panduan
                 </button>
@@ -231,7 +236,8 @@
     </nav>
     <!-- Sheet menu Lainnya (HP) -->
     <div id="moreSheet" class="hidden fixed inset-0 z-40 md:hidden" onclick="toggleMoreSheet(false)">
-        <div class="absolute bottom-16 left-0 right-0 bg-cardBg border-t border-cardBorder rounded-t-2xl p-4 grid grid-cols-4 gap-2" onclick="event.stopPropagation()">
+        <div class="absolute bottom-16 left-0 right-0 bg-cardBg border-t border-cardBorder rounded-t-2xl p-4 grid grid-cols-5 gap-2" onclick="event.stopPropagation()">
+            <button onclick="openFromMore('posts')" class="flex flex-col items-center gap-1 py-3 rounded-xl bg-zinc-900 border border-cardBorder text-zinc-200"><i data-lucide="trending-up" class="w-5 h-5"></i><span class="text-[11px]">Catatan</span></button>
             <button onclick="openFromMore('ugc')" class="flex flex-col items-center gap-1 py-3 rounded-xl bg-zinc-900 border border-cardBorder text-zinc-200"><i data-lucide="clapperboard" class="w-5 h-5"></i><span class="text-[11px]">UGC</span></button>
             <button onclick="openFromMore('dance')" class="flex flex-col items-center gap-1 py-3 rounded-xl bg-zinc-900 border border-cardBorder text-zinc-200"><i data-lucide="music" class="w-5 h-5"></i><span class="text-[11px]">Joget</span></button>
             <button onclick="openFromMore('guide')" class="flex flex-col items-center gap-1 py-3 rounded-xl bg-zinc-900 border border-cardBorder text-zinc-200"><i data-lucide="book-open" class="w-5 h-5"></i><span class="text-[11px]">Panduan</span></button>
@@ -471,6 +477,31 @@
                                     <option value="Oval">Oval</option>
                                     <option value="Tirus">Tirus</option>
                                     <option value="Bulat">Bulat</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="maleHairGroup" class="hidden space-y-3">
+                            <div>
+                                <label class="block text-zinc-400 mb-1">Rambut</label>
+                                <select id="charHairMale" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2 text-white focus:outline-none focus:border-primary">
+                                    <option value="Short hair">Pendek rapi</option>
+                                    <option value="Curly hair">Ikal / keriting</option>
+                                    <option value="Undercut">Undercut</option>
+                                    <option value="Fade haircut">Fade</option>
+                                    <option value="Pompadour">Pompadour</option>
+                                    <option value="Middle part two-block haircut">Belah tengah (two-block)</option>
+                                    <option value="Shoulder-length hair">Gondrong sebahu</option>
+                                    <option value="Buzz cut">Cepak (buzz cut)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-zinc-400 mb-1">Jenggot / Kumis</label>
+                                <select id="charBeard" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2 text-white focus:outline-none focus:border-primary">
+                                    <option value="">Bersih (tanpa jenggot &amp; kumis)</option>
+                                    <option value="a thin mustache only, clean-shaven chin">Kumis tipis saja</option>
+                                    <option value="a light short beard, no mustache">Jenggot tipis saja</option>
+                                    <option value="a thin mustache and a light short beard">Kumis + jenggot tipis</option>
+                                    <option value="a full thick beard and mustache">Jenggot lebat</option>
                                 </select>
                             </div>
                         </div>
@@ -995,6 +1026,68 @@
         </section>
 
         <!-- ==================== TAB: SETTINGS ==================== -->
+        <!-- ==================== TAB: CATATAN POSTINGAN ==================== -->
+        <section id="tab-posts" class="space-y-4 tab-section hidden">
+            <div class="flex flex-wrap items-center justify-between gap-3 bg-cardBg border border-cardBorder rounded-2xl p-5">
+                <div>
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2"><i data-lucide="trending-up" class="w-5 h-5 text-primary"></i> Catatan Postingan</h2>
+                    <p class="text-sm text-zinc-400 mt-1">Catat hasil postingan affiliate dari TikTok, Shopee Video, dan Facebook, lalu lihat grafiknya di satu tempat.</p>
+                </div>
+                <button onclick="openPostModal()" class="px-4 py-2.5 bg-primary hover:bg-violet-600 text-white rounded-xl text-sm font-bold flex items-center gap-2"><i data-lucide="plus" class="w-4 h-4"></i> Catat Postingan</button>
+            </div>
+
+            <div class="bg-cardBg border border-cardBorder rounded-2xl p-4 space-y-3">
+                <div id="postPeriodChips" class="flex flex-wrap gap-2"></div>
+                <div id="postCustomRange" class="hidden"><div class="grid grid-cols-2 gap-2 text-xs">
+                    <div><label class="block text-zinc-400 mb-1">Dari tanggal</label><input type="date" id="postFrom" onchange="onPostRangeInput()" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"></div>
+                    <div><label class="block text-zinc-400 mb-1">Sampai tanggal</label><input type="date" id="postTo" onchange="onPostRangeInput()" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"></div>
+                </div></div>
+                <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+                    <span id="postRangeText" class="text-zinc-400"></span>
+                    <label class="flex items-center gap-2 text-zinc-400">Tampilkan
+                        <select id="postGran" onchange="setPostGran(this.value)" class="bg-zinc-900 border border-cardBorder rounded-lg px-2 py-1.5 text-white">
+                            <option value="day">Per hari</option><option value="week">Per minggu</option><option value="month">Per bulan</option>
+                        </select>
+                    </label>
+                </div>
+                <div id="postLegend" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <div class="bg-cardBg border border-cardBorder rounded-2xl p-4 space-y-3">
+                <div class="flex items-center justify-between gap-2">
+                    <h3 class="font-bold text-white text-base">Metrik Utama</h3>
+                    <span class="text-xs text-zinc-400">Ketuk kartu untuk mengubah grafik</span>
+                </div>
+                <div id="postMetricCards" class="grid grid-cols-2 md:grid-cols-4 gap-2"></div>
+            </div>
+
+            <div class="bg-cardBg border border-cardBorder rounded-2xl p-4 space-y-3">
+                <div class="flex items-center justify-between gap-2">
+                    <h3 id="postChartTitle" class="font-bold text-white text-base">Grafik</h3>
+                    <button onclick="togglePostTable()" id="postTableBtn" class="px-3 py-1.5 bg-zinc-900 border border-cardBorder text-zinc-300 rounded-lg text-xs font-semibold">Lihat tabel</button>
+                </div>
+                <div id="postChartWrap" class="relative">
+                    <div id="postChart"></div>
+                    <div id="postTip" class="hidden absolute pointer-events-none z-10 bg-cardBg border border-cardBorder rounded-xl p-2.5 text-xs shadow-lg min-w-[130px]"></div>
+                </div>
+                <div id="postTableBox" class="hidden overflow-x-auto"></div>
+            </div>
+
+            <div class="bg-cardBg border border-cardBorder rounded-2xl p-4 space-y-3">
+                <h3 class="font-bold text-white text-base">Performa Produk</h3>
+                <div id="postProducts"></div>
+            </div>
+
+            <div class="bg-cardBg border border-cardBorder rounded-2xl p-4 space-y-3">
+                <div class="flex items-center justify-between gap-2">
+                    <h3 class="font-bold text-white text-base">Performa Konten</h3>
+                    <span class="text-xs text-zinc-400">Urut paling banyak ditonton</span>
+                </div>
+                <div id="postContents" class="space-y-2"></div>
+                <button id="postShowAllBtn" onclick="togglePostShowAll()" class="hidden w-full py-2 bg-zinc-900 border border-cardBorder text-zinc-300 rounded-xl text-xs font-semibold"></button>
+            </div>
+        </section>
+
         <section id="tab-settings" class="space-y-6 tab-section hidden">
             <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl">
                 <h2 class="text-xl font-bold text-white">Pengaturan & Konfigurasi API ⚙️</h2>
@@ -1102,6 +1195,73 @@
         </div>
     </div>
 
+    <!-- Modal: Catatan Postingan -->
+    <div id="postModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-start md:items-center justify-center p-3 overflow-y-auto hidden">
+        <div class="bg-cardBg border border-cardBorder rounded-2xl max-w-lg w-full p-5 space-y-4 my-4">
+            <div class="flex items-center justify-between">
+                <h3 id="postModalTitle" class="font-bold text-white text-base">Catat Postingan</h3>
+                <button onclick="closePostModal()" class="text-zinc-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <input type="hidden" id="postId">
+            <div class="space-y-3 text-xs">
+                <div class="grid grid-cols-2 gap-2">
+                    <div><label class="block text-zinc-400 mb-1">Tanggal posting *</label><input type="date" id="postDate" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"></div>
+                    <div><label class="block text-zinc-400 mb-1">Platform *</label>
+                        <select id="postPlatform" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary">
+                            <option value="TikTok">TikTok</option><option value="Shopee Video">Shopee Video</option><option value="Facebook">Facebook</option><option value="Lainnya">Lainnya</option>
+                        </select></div>
+                </div>
+                <div><label class="block text-zinc-400 mb-1">Produk *</label><input type="text" id="postProduct" list="postProductList" placeholder="Nama produk yang dipromosikan" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"><datalist id="postProductList"></datalist></div>
+                <div><label class="block text-zinc-400 mb-1">Komisi (Rp) *</label><input type="text" inputmode="numeric" id="postCommission" placeholder="Isi 0 jika belum ada. Angka saja, tanpa titik" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"></div>
+                <p class="text-zinc-500">Angka lain di bawah boleh dikosongkan, lalu dilengkapi nanti lewat tombol Ubah.</p>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-zinc-400 mb-1">Penonton</label>
+                        <input type="text" inputmode="numeric" id="postViews" placeholder="0" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary">
+                    </div>
+                    <div>
+                        <label class="block text-zinc-400 mb-1">Suka</label>
+                        <input type="text" inputmode="numeric" id="postLikes" placeholder="0" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary">
+                    </div>
+                    <div>
+                        <label class="block text-zinc-400 mb-1">Komentar</label>
+                        <input type="text" inputmode="numeric" id="postComments" placeholder="0" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary">
+                    </div>
+                    <div>
+                        <label class="block text-zinc-400 mb-1">Klik</label>
+                        <input type="text" inputmode="numeric" id="postClicks" placeholder="0" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary">
+                    </div>
+                    <div>
+                        <label class="block text-zinc-400 mb-1">Pesanan</label>
+                        <input type="text" inputmode="numeric" id="postOrders" placeholder="0" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary">
+                    </div>
+                    <div>
+                        <label class="block text-zinc-400 mb-1">Produk terjual</label>
+                        <input type="text" inputmode="numeric" id="postItemsSold" placeholder="0" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary">
+                    </div>
+                </div>
+                
+                    <div>
+                        <label class="block text-zinc-400 mb-1">Penjualan (Rp)</label>
+                        <input type="text" inputmode="numeric" id="postSales" placeholder="0" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary">
+                    </div>
+                <div><label class="block text-zinc-400 mb-1">Link postingan</label><input type="text" id="postUrl" placeholder="https://..." class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"></div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div><label class="block text-zinc-400 mb-1">Karakter dipakai</label><select id="postCharacter" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"><option value="">-</option></select></div>
+                    <div><label class="block text-zinc-400 mb-1">Script / hook dipakai</label><input type="text" id="postScript" placeholder="Opsional" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"></div>
+                </div>
+                <div><label class="block text-zinc-400 mb-1">Catatan</label><textarea id="postNote" rows="2" placeholder="Misal: jam posting, hasil yang dipelajari..." class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm resize-none"></textarea></div>
+            </div>
+            <div class="flex items-center justify-between gap-2 pt-1">
+                <button id="postDeleteBtn" onclick="deletePost()" class="hidden px-4 py-2.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 rounded-xl text-xs font-semibold">Hapus</button>
+                <div class="flex gap-2 ml-auto">
+                    <button onclick="closePostModal()" class="px-4 py-2.5 bg-zinc-800 text-zinc-300 rounded-xl text-xs font-semibold">Batal</button>
+                    <button onclick="savePost()" class="px-5 py-2.5 bg-primary hover:bg-violet-600 text-white rounded-xl text-xs font-bold">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal: Proyek Baru -->
     <div id="projectModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-cardBg border border-cardBorder rounded-2xl max-w-md w-full p-6 space-y-4">
@@ -1195,7 +1355,7 @@
 
         // --- INDEXEDDB & PERMANENT STORAGE ---
         const DB_NAME = 'MotionAIToolsDB_v31';
-        const DB_VERSION = 2;
+        const DB_VERSION = 3;
         let db = null;
         let activeProjectId = null;
         let ugcProductPhotos = [];
@@ -1212,7 +1372,7 @@
                 };
                 request.onupgradeneeded = (e) => {
                     const database = e.target.result;
-                    const stores = ['projects', 'characters', 'scripts', 'videos', 'items', 'commissions', 'clips'];
+                    const stores = ['projects', 'characters', 'scripts', 'videos', 'items', 'commissions', 'clips', 'posts'];
                     stores.forEach(store => {
                         if (!database.objectStoreNames.contains(store)) {
                             database.createObjectStore(store, { keyPath: 'id', autoIncrement: true });
@@ -1370,7 +1530,7 @@
                     btn.classList.remove('bg-zinc-800', 'text-white'); btn.classList.add('text-zinc-300');
                 }
             });
-            const moreTabs = ['ugc', 'dance', 'guide', 'settings'];
+            const moreTabs = ['posts', 'ugc', 'dance', 'guide', 'settings'];
             document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
                 const t = btn.dataset.tab;
                 const active = (t === tabId) || (t === 'more' && moreTabs.includes(tabId));
@@ -1393,6 +1553,7 @@
 
         function refreshTabData(tabId) {
             if(tabId === 'dashboard') loadDashboardData();
+            if(tabId === 'posts') loadPostsData();
             if(tabId === 'projects') loadProjectsData();
             if(tabId === 'character') loadCharacterData();
             if(tabId === 'script') loadScriptData();
@@ -1699,6 +1860,7 @@
         function toggleGenderOptions() {
             const gender = document.getElementById('charGender').value;
             document.getElementById('femaleHairGroup').classList.toggle('hidden', gender === 'Laki-laki');
+            document.getElementById('maleHairGroup').classList.toggle('hidden', gender !== 'Laki-laki');
             document.getElementById('hijabGroup').classList.toggle('hidden', gender === 'Laki-laki');
             populateOutfitOptions();
         }
@@ -1713,7 +1875,8 @@
             const ethnicity = document.getElementById('charEthnicity').value;
             const skin = document.getElementById('charSkin').value;
             const faceShape = document.getElementById('charFaceShape').value;
-            const hair = gender === 'Perempuan' ? document.getElementById('charHair').value : 'Short hair';
+            const hair = gender === 'Perempuan' ? document.getElementById('charHair').value : document.getElementById('charHairMale').value;
+            const beard = gender === 'Laki-laki' ? document.getElementById('charBeard').value : '';
             const hijab = gender === 'Perempuan' ? document.getElementById('charHijab').value : 'Tidak';
             const hijabColor = document.getElementById('charHijabColor').value;
             const hijabModel = document.getElementById('charHijabModel').value;
@@ -1725,7 +1888,7 @@
             const expression = document.getElementById('charExpression').value;
 
             let hijabStr = hijab === 'Ya' ? `wearing ${hijabColor} ${hijabModel} hijab` : `hair: ${hair}`;
-            return `A hyper-realistic close-up portrait photo of an Indonesian ${gender.toLowerCase()}, age ${age} (${ageLook(age)}), ${ethnicity} ethnicity, ${skin} skin tone, ${faceShape} face shape, ${eyes} eyes, height ${height}cm. ${hijabStr}. Outfit: ${outfit}. Background: ${bg}. Lighting: ${lighting}. Expression: ${expression}. Photorealistic, professional.`;
+            return `A hyper-realistic close-up portrait photo of an Indonesian ${gender.toLowerCase()}, age ${age} (${ageLook(age)}), ${ethnicity} ethnicity, ${skin} skin tone, ${faceShape} face shape, ${eyes} eyes, height ${height}cm. ${hijabStr}.${beard ? ' Facial hair: ' + beard + '.' : ''} Outfit: ${outfit}. Background: ${bg}. Lighting: ${lighting}. Expression: ${expression}. Photorealistic, professional.`;
         }
 
         function generateMasterPrompt() {
@@ -2381,8 +2544,8 @@
                                 <span class="text-emerald-400 font-bold">${escapeHtml(s.title)}</span>
                                 <button onclick="copySceneByIndex('${kind}', ${i})" class="px-2.5 py-1 bg-zinc-800 text-white rounded text-[11px] hover:bg-zinc-700 shrink-0">Copy Adegan ${i + 1}</button>
                             </div>
-                            <p class="font-mono text-zinc-300 whitespace-pre-wrap">${escapeHtml(s.prompt)}</p>
                             ${data.id ? `<div class="clip-slot" data-video="${data.id}" data-scene="${i}"></div>` : ''}
+                            <p class="font-mono text-zinc-300 whitespace-pre-wrap">${escapeHtml(s.prompt)}</p>
                         </div>`).join('')}
                     <p class="text-[11px] text-zinc-400 border border-dashed border-cardBorder rounded-xl p-3">Satu adegan = satu klip di Flow. Gabungkan klip di CapCut untuk video berdurasi lebih panjang.</p>
                     ${data.capcutText ? `<p class="text-[11px] text-zinc-300 border border-dashed border-cardBorder rounded-xl p-3"><strong>Teks untuk CapCut (tidak masuk prompt):</strong> ${escapeHtml(data.capcutText)}</p>` : ''}
@@ -2534,8 +2697,12 @@
                     </div>
                 </div>`;
             }
-            return `<label class="flex items-center gap-2 p-2.5 border border-dashed border-cardBorder rounded-lg text-[11px] text-zinc-400 hover:text-white cursor-pointer">
-                <span>⬆</span> Unggah video hasil ${label} (maks 50 MB)
+            return `<label class="flex items-center gap-3 p-3 border-2 border-dashed border-primary/70 bg-primary/10 hover:bg-primary/20 rounded-xl cursor-pointer">
+                <span class="text-2xl leading-none text-primary">⬆</span>
+                <span class="min-w-0">
+                    <span class="block text-sm font-bold text-primary">Unggah Video Hasil ${label}</span>
+                    <span class="block text-xs text-zinc-400">Ketuk untuk memilih video · maks 50 MB</span>
+                </span>
                 <input type="file" accept="video/*" class="hidden" onchange="uploadClip(${videoId}, ${i}, event)">
             </label>`;
         }
@@ -2788,8 +2955,364 @@
             showToast('ZIP aset proyek diunduh!', 'success');
         }
 
+        // --- CATATAN POSTINGAN + GRAFIK ---
+        const POST_PLATFORMS = [
+            { k: 'TikTok', c: 'var(--pf-tiktok)' },
+            { k: 'Shopee Video', c: 'var(--pf-shopee)' },
+            { k: 'Facebook', c: 'var(--pf-facebook)' },
+            { k: 'Lainnya', c: 'var(--pf-other)' }
+        ];
+        const POST_METRICS = [
+            { k: 'commission', label: 'Komisi', money: true },
+            { k: 'sales', label: 'Penjualan', money: true },
+            { k: 'orders', label: 'Pesanan' },
+            { k: 'itemsSold', label: 'Produk Terjual' },
+            { k: 'views', label: 'Penonton' },
+            { k: 'likes', label: 'Suka' },
+            { k: 'comments', label: 'Komentar' },
+            { k: 'clicks', label: 'Klik' }
+        ];
+        const POST_PERIODS = [['yesterday', 'Kemarin'], ['7d', '7 Hari'], ['30d', '30 Hari'], ['custom', 'Lainnya']];
+        const MONTHS_ID = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+        const DAY_MS = 86400000;
+        let postsAll = [];
+        const PS = { period: '7d', from: '', to: '', gran: 'day', metric: 'commission', hidden: {}, showAll: false, table: false };
+
+        function fmtInt(n) { return String(Math.round(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+        function fmtRp(n) { return 'Rp ' + fmtInt(n); }
+        function fmtCompact(n) {
+            n = Number(n) || 0;
+            const a = Math.abs(n), d = x => String(Math.round(x * 10) / 10).replace('.', ',');
+            if (a >= 1e9) return d(n / 1e9) + ' M';
+            if (a >= 1e6) return d(n / 1e6) + ' jt';
+            if (a >= 1e3) return d(n / 1e3) + ' rb';
+            return String(Math.round(n));
+        }
+        function pYmd(s) { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ''); return m ? Date.UTC(+m[1], +m[2] - 1, +m[3]) : NaN; }
+        function todayUtc() { const d = new Date(); return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()); }
+        function utcToYmd(t) { const d = new Date(t); return d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0') + '-' + String(d.getUTCDate()).padStart(2, '0'); }
+        function fmtDay(t, withYear) { const d = new Date(t); return d.getUTCDate() + ' ' + MONTHS_ID[d.getUTCMonth()] + (withYear ? ' ' + d.getUTCFullYear() : ''); }
+        const pfKey = p => POST_PLATFORMS.some(x => x.k === p.platform) ? p.platform : 'Lainnya';
+        const pfColor = k => (POST_PLATFORMS.find(x => x.k === k) || POST_PLATFORMS[3]).c;
+        const pNum = (p, k) => Number(p[k]) || 0;
+        const fmtMetric = (m, v) => m.money ? fmtRp(v) : fmtInt(v);
+
+        function postRange() {
+            const t = todayUtc();
+            let s, e;
+            if (PS.period === 'yesterday') { s = e = t - DAY_MS; }
+            else if (PS.period === '30d') { s = t - 29 * DAY_MS; e = t; }
+            else if (PS.period === 'custom') {
+                s = pYmd(PS.from); e = pYmd(PS.to);
+                if (isNaN(s) || isNaN(e)) { s = t - 6 * DAY_MS; e = t; }
+                if (s > e) { const x = s; s = e; e = x; }
+                if (e - s > 365 * DAY_MS) s = e - 365 * DAY_MS;
+            } else { s = t - 6 * DAY_MS; e = t; }
+            return { s, e };
+        }
+        function postPrevRange(r) { const len = (r.e - r.s) / DAY_MS + 1; return { s: r.s - len * DAY_MS, e: r.s - DAY_MS }; }
+        function postsIn(r, onlyVisible) {
+            return postsAll.filter(p => {
+                const t = pYmd(p.date);
+                return t >= r.s && t <= r.e && (!onlyVisible || !PS.hidden[pfKey(p)]);
+            });
+        }
+        function sumPosts(list) {
+            const o = {};
+            POST_METRICS.forEach(m => { o[m.k] = list.reduce((a, p) => a + pNum(p, m.k), 0); });
+            return o;
+        }
+        function postBuckets(r, gran) {
+            const arr = [];
+            let t = r.s;
+            while (t <= r.e) {
+                let e;
+                if (gran === 'week') { const wd = (new Date(t).getUTCDay() + 6) % 7; e = Math.min(r.e, t + (6 - wd) * DAY_MS); }
+                else if (gran === 'month') { const d = new Date(t); e = Math.min(r.e, Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0)); }
+                else e = t;
+                const d = new Date(t);
+                let label = fmtDay(t), full = fmtDay(t, true);
+                if (gran === 'week' && e > t) full = fmtDay(t) + ' – ' + fmtDay(e, true);
+                if (gran === 'month') { label = MONTHS_ID[d.getUTCMonth()] + ' ' + String(d.getUTCFullYear()).slice(2); full = MONTHS_ID[d.getUTCMonth()] + ' ' + d.getUTCFullYear(); }
+                arr.push({ s: t, e, label, full });
+                t = e + DAY_MS;
+            }
+            return arr;
+        }
+
+        async function loadPostsData() {
+            try { postsAll = await dbGetAll('posts'); } catch (e) { postsAll = []; }
+            renderPosts();
+        }
+
+        function setPostPeriod(p) {
+            PS.period = p; PS.showAll = false;
+            if (p === 'custom' && !PS.from) { const r = postRange(); PS.from = utcToYmd(r.s); PS.to = utcToYmd(r.e); }
+            if (p === 'yesterday') PS.gran = 'day';
+            renderPosts();
+        }
+        function onPostRangeInput() { PS.from = $id('postFrom').value; PS.to = $id('postTo').value; renderPosts(); }
+        function setPostGran(g) { PS.gran = g; renderPosts(); }
+        function setPostMetric(k) { PS.metric = k; renderPosts(); }
+        function togglePostPlatform(k) {
+            if (k === 'all') PS.hidden = {};
+            else {
+                const hiddenNow = !!PS.hidden[k];
+                const visibleCount = POST_PLATFORMS.filter(x => !PS.hidden[x.k]).length;
+                if (!hiddenNow && visibleCount === 1) return;
+                PS.hidden[k] = !hiddenNow;
+            }
+            PS.showAll = false;
+            renderPosts();
+        }
+        function togglePostTable() { PS.table = !PS.table; renderPosts(); }
+        function togglePostShowAll() { PS.showAll = !PS.showAll; renderPosts(); }
+
+        function renderPosts() {
+            if (!$id('postChart')) return;
+            const r = postRange(), pr = postPrevRange(r);
+            const chip = (on) => 'px-3.5 py-2 rounded-lg text-xs font-semibold border ' + (on ? 'bg-primary text-white border-primary' : 'bg-zinc-900 text-zinc-300 border-cardBorder hover:bg-zinc-800');
+            $id('postPeriodChips').innerHTML = POST_PERIODS.map(p => `<button onclick="setPostPeriod('${p[0]}')" class="${chip(PS.period === p[0])}">${p[1]}</button>`).join('');
+            $id('postCustomRange').classList.toggle('hidden', PS.period !== 'custom');
+            if (PS.period === 'custom') { $id('postFrom').value = PS.from; $id('postTo').value = PS.to; }
+            $id('postGran').value = PS.gran;
+            $id('postRangeText').textContent = (r.s === r.e ? fmtDay(r.s, true) : fmtDay(r.s, r.s !== r.e && new Date(r.s).getUTCFullYear() !== new Date(r.e).getUTCFullYear()) + ' – ' + fmtDay(r.e, true)) + ' · dibanding periode sebelumnya';
+
+            const allVisible = POST_PLATFORMS.every(x => !PS.hidden[x.k]);
+            $id('postLegend').innerHTML = `<button onclick="togglePostPlatform('all')" class="${chip(allVisible)}">Semua</button>` +
+                POST_PLATFORMS.map(x => {
+                    const on = !PS.hidden[x.k];
+                    return `<button onclick="togglePostPlatform('${x.k}')" aria-pressed="${on}" class="px-3 py-2 rounded-lg text-xs font-semibold border border-cardBorder bg-zinc-900 text-zinc-200 flex items-center gap-2 ${on ? '' : 'opacity-40'}"><span class="inline-block w-3 h-3 rounded-full" style="background:${x.c}"></span>${x.k}</button>`;
+                }).join('');
+
+            const cur = sumPosts(postsIn(r, true)), prev = sumPosts(postsIn(pr, true));
+            $id('postMetricCards').innerHTML = POST_METRICS.map(m => {
+                const c = cur[m.k], p = prev[m.k];
+                let delta = '<span class="text-zinc-500">–</span>';
+                if (p > 0) {
+                    const pct = Math.round((c - p) / p * 100);
+                    delta = pct === 0 ? '<span class="text-zinc-400">0%</span>' : `<span class="${pct > 0 ? 'text-emerald-400' : 'text-rose-400'}">${pct > 0 ? '▲' : '▼'} ${Math.abs(pct)}%</span>`;
+                }
+                const sel = PS.metric === m.k;
+                return `<button onclick="setPostMetric('${m.k}')" aria-pressed="${sel}" class="text-left p-3 rounded-xl border ${sel ? 'border-primary bg-primary/10' : 'border-cardBorder bg-zinc-900 hover:bg-zinc-800'}">
+                    <div class="text-xs text-zinc-400">${m.label}</div>
+                    <div class="text-base font-bold text-white mt-0.5 break-words">${fmtMetric(m, c)}</div>
+                    <div class="text-xs mt-0.5">${delta}</div>
+                </button>`;
+            }).join('');
+
+            renderPostChart(r);
+            renderPostProducts(r);
+            renderPostContents(r);
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function niceStep(max, integer) {
+            let raw = (max > 0 ? max : 4) / 4;
+            const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+            let step = [1, 2, 2.5, 5, 10].map(f => f * mag).find(v => v >= raw) || 10 * mag;
+            if (integer && step < 1) step = 1;
+            return step;
+        }
+
+        function postSeries(r, buckets, m) {
+            const idxOf = t => Math.floor((t - r.s) / DAY_MS);
+            const map = new Array(Math.round((r.e - r.s) / DAY_MS) + 1);
+            buckets.forEach((b, i) => { for (let t = b.s; t <= b.e; t += DAY_MS) map[idxOf(t)] = i; });
+            const inRange = postsIn(r, false);
+            return POST_PLATFORMS.filter(pf => !PS.hidden[pf.k] && inRange.some(p => pfKey(p) === pf.k)).map(pf => {
+                const vals = new Array(buckets.length).fill(0);
+                inRange.filter(p => pfKey(p) === pf.k).forEach(p => { const i = map[idxOf(pYmd(p.date))]; if (i !== undefined) vals[i] += pNum(p, m.k); });
+                return { pf, vals };
+            });
+        }
+
+        function renderPostChart(r) {
+            const m = POST_METRICS.find(x => x.k === PS.metric) || POST_METRICS[0];
+            $id('postChartTitle').textContent = m.label + (m.money ? ' (Rp)' : '');
+            const wrap = $id('postChart'), tip = $id('postTip');
+            tip.classList.add('hidden');
+            $id('postTableBtn').textContent = PS.table ? 'Sembunyikan tabel' : 'Lihat tabel';
+            const buckets = postBuckets(r, PS.gran), series = postSeries(r, buckets, m);
+            if (!series.length) {
+                wrap.innerHTML = '<div class="py-10 text-center text-sm text-zinc-400">Belum ada catatan pada periode ini.<br>Ketuk <strong>Catat Postingan</strong> untuk mulai mencatat.</div>';
+                $id('postTableBox').classList.add('hidden');
+                return;
+            }
+            const n = buckets.length;
+            const w = Math.max(280, wrap.clientWidth || 320), h = 230, ml = 48, mr = 14, mt = 12, mb = 28;
+            const pw = w - ml - mr, ph = h - mt - mb;
+            const maxV = Math.max(0, ...series.map(s => Math.max(...s.vals)));
+            const step = niceStep(maxV, !m.money), yMax = step * 4;
+            const X = i => n === 1 ? ml + pw / 2 : ml + pw * i / (n - 1);
+            const Y = v => mt + ph * (1 - v / yMax);
+            let g = '';
+            for (let k = 0; k <= 4; k++) {
+                const y = Y(step * k);
+                g += `<line x1="${ml}" x2="${w - mr}" y1="${y}" y2="${y}" stroke="currentColor" stroke-opacity="${k === 0 ? .35 : .15}"/>`;
+                g += `<text x="${ml - 6}" y="${y + 4}" text-anchor="end" font-size="11" fill="currentColor">${fmtCompact(step * k)}</text>`;
+            }
+            const maxLabels = Math.max(2, Math.floor(pw / 56)), every = Math.max(1, Math.ceil(n / maxLabels));
+            buckets.forEach((b, i) => { if (i % every === 0) g += `<text x="${X(i)}" y="${h - 8}" text-anchor="${n === 1 ? 'middle' : (i === 0 ? 'start' : 'middle')}" font-size="11" fill="currentColor">${b.label}</text>`; });
+            series.forEach(s => {
+                const d = s.vals.map((v, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1)).join(' ');
+                if (n > 1) g += `<path d="${d}" fill="none" stroke="${s.pf.c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+                if (n <= 16) s.vals.forEach((v, i) => { g += `<circle cx="${X(i)}" cy="${Y(v)}" r="${n === 1 ? 5 : 3}" fill="${s.pf.c}" stroke="var(--chart-surface, #18181B)" stroke-width="2"/>`; });
+            });
+            wrap.innerHTML = `<svg id="postSvg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" class="text-zinc-400" style="display:block;touch-action:pan-y" role="img" aria-label="Grafik ${m.label} per platform. Data lengkap ada di tabel.">${g}<g id="postHover"></g><rect id="postHit" x="0" y="0" width="${w}" height="${h}" fill="transparent"/></svg>`;
+
+            const hover = $id('postHover'), hit = $id('postHit'), box = $id('postChartWrap');
+            const show = (ev) => {
+                const rect = hit.getBoundingClientRect();
+                const x = ev.clientX - rect.left;
+                let i = n === 1 ? 0 : Math.round((x - ml) / pw * (n - 1));
+                i = Math.max(0, Math.min(n - 1, i));
+                const cx = X(i);
+                hover.innerHTML = `<line x1="${cx}" x2="${cx}" y1="${mt}" y2="${mt + ph}" stroke="currentColor" stroke-opacity=".5" stroke-dasharray="3 3"/>` +
+                    series.map(s => `<circle cx="${cx}" cy="${Y(s.vals[i])}" r="4.5" fill="${s.pf.c}" stroke="var(--chart-surface, #18181B)" stroke-width="2"/>`).join('');
+                tip.innerHTML = `<div class="font-semibold text-white mb-1">${buckets[i].full}</div>` +
+                    series.map(s => `<div class="flex items-center justify-between gap-3 text-zinc-300"><span class="flex items-center gap-1.5"><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:${s.pf.c}"></span>${s.pf.k}</span><span class="font-semibold text-white">${fmtMetric(m, s.vals[i])}</span></div>`).join('');
+                tip.classList.remove('hidden');
+                const tw = tip.offsetWidth;
+                let left = cx + 12; if (left + tw > w) left = cx - tw - 12; if (left < 0) left = 0;
+                tip.style.left = left + 'px'; tip.style.top = '4px';
+            };
+            hit.addEventListener('pointermove', show);
+            hit.addEventListener('pointerdown', show);
+            hit.addEventListener('pointerleave', () => { hover.innerHTML = ''; tip.classList.add('hidden'); });
+
+            const tb = $id('postTableBox');
+            tb.classList.toggle('hidden', !PS.table);
+            if (PS.table) {
+                tb.innerHTML = `<table class="w-full text-xs"><thead><tr class="text-zinc-400 text-left"><th class="py-2 pr-3 font-semibold">Periode</th>${series.map(s => `<th class="py-2 pr-3 font-semibold text-right">${s.pf.k}</th>`).join('')}</tr></thead><tbody>` +
+                    buckets.map((b, i) => `<tr class="border-t border-cardBorder"><td class="py-2 pr-3 text-zinc-300">${b.full}</td>${series.map(s => `<td class="py-2 pr-3 text-right text-white">${fmtMetric(m, s.vals[i])}</td>`).join('')}</tr>`).join('') + '</tbody></table>';
+            }
+        }
+
+        function renderPostProducts(r) {
+            const list = postsIn(r, true);
+            const map = {};
+            list.forEach(p => {
+                const key = String(p.product || '-').trim().toLowerCase();
+                const o = map[key] || (map[key] = { name: String(p.product || '-').trim(), posts: 0, sold: 0, sales: 0, comm: 0 });
+                o.posts++; o.sold += pNum(p, 'itemsSold'); o.sales += pNum(p, 'sales'); o.comm += pNum(p, 'commission');
+            });
+            const rows = Object.values(map).sort((a, b) => b.comm - a.comm).slice(0, 10);
+            const box = $id('postProducts');
+            if (!rows.length) { box.innerHTML = '<p class="text-sm text-zinc-400 py-3">Belum ada data produk pada periode ini.</p>'; return; }
+            box.innerHTML = `<div class="overflow-x-auto"><table class="w-full text-xs"><thead><tr class="text-zinc-400 text-left"><th class="py-2 pr-2 font-semibold">Produk</th><th class="py-2 pr-2 font-semibold text-right">Terjual</th><th class="py-2 pr-2 font-semibold text-right">Penjualan</th><th class="py-2 font-semibold text-right">Komisi</th></tr></thead><tbody>` +
+                rows.map(o => `<tr class="border-t border-cardBorder"><td class="py-2.5 pr-2"><div class="text-sm text-white font-semibold">${escapeHtml(o.name)}</div><div class="text-zinc-400">${o.posts} postingan</div></td><td class="py-2.5 pr-2 text-right text-white">${fmtInt(o.sold)}</td><td class="py-2.5 pr-2 text-right text-white whitespace-nowrap">${fmtRp(o.sales)}</td><td class="py-2.5 text-right font-bold text-emerald-400 whitespace-nowrap">${fmtRp(o.comm)}</td></tr>`).join('') +
+                '</tbody></table></div>';
+        }
+
+        function renderPostContents(r) {
+            const list = postsIn(r, true).sort((a, b) => (pNum(b, 'views') - pNum(a, 'views')) || (pNum(b, 'commission') - pNum(a, 'commission')) || (pYmd(b.date) - pYmd(a.date)));
+            const box = $id('postContents'), btn = $id('postShowAllBtn');
+            if (!list.length) { box.innerHTML = '<p class="text-sm text-zinc-400 py-3">Belum ada postingan pada periode ini.</p>'; btn.classList.add('hidden'); return; }
+            const shown = PS.showAll ? list : list.slice(0, 10);
+            box.innerHTML = shown.map(p => {
+                const stat = (label, v) => `<div><div class="text-zinc-400">${label}</div><div class="text-white font-semibold">${v}</div></div>`;
+                const url = /^https?:\/\//i.test(p.url || '') ? `<a href="${escapeHtml(p.url)}" target="_blank" rel="noopener" class="px-3 py-1.5 bg-zinc-800 text-white rounded-lg text-xs font-semibold">Buka</a>` : '';
+                const extra = [p.characterName ? 'Karakter: ' + escapeHtml(p.characterName) : '', p.scriptNote ? 'Script: ' + escapeHtml(p.scriptNote) : ''].filter(Boolean).join(' · ');
+                return `<div class="p-3 bg-zinc-900 border border-cardBorder rounded-xl space-y-2">
+                    <div class="flex items-start justify-between gap-2">
+                        <div class="min-w-0">
+                            <div class="text-sm font-bold text-white break-words">${escapeHtml(p.product || '-')}</div>
+                            <div class="text-xs text-zinc-400 flex items-center gap-1.5 mt-0.5"><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:${pfColor(pfKey(p))}"></span>${escapeHtml(p.platform || 'Lainnya')} · ${fmtDay(pYmd(p.date), true)}</div>
+                        </div>
+                        <div class="flex gap-1.5 shrink-0">${url}<button onclick="openPostModal(${p.id})" class="px-3 py-1.5 bg-zinc-800 text-white rounded-lg text-xs font-semibold">Ubah</button></div>
+                    </div>
+                    <div class="grid grid-cols-4 gap-2 text-xs">${stat('Tonton', fmtInt(pNum(p, 'views')))}${stat('Suka', fmtInt(pNum(p, 'likes')))}${stat('Pesanan', fmtInt(pNum(p, 'orders')))}${stat('Komisi', fmtRp(pNum(p, 'commission')))}</div>
+                    ${extra ? `<div class="text-xs text-zinc-400">${extra}</div>` : ''}
+                    ${p.note ? `<div class="text-xs text-zinc-300">${escapeHtml(p.note)}</div>` : ''}
+                </div>`;
+            }).join('');
+            btn.classList.toggle('hidden', list.length <= 10);
+            btn.textContent = PS.showAll ? 'Tampilkan 10 teratas saja' : 'Tampilkan semua (' + list.length + ')';
+        }
+
+        // --- Form catat / ubah / hapus ---
+        async function openPostModal(id) {
+            const post = id ? postsAll.find(p => p.id === id) : null;
+            $id('postId').value = post ? post.id : '';
+            $id('postModalTitle').textContent = post ? 'Ubah Catatan Postingan' : 'Catat Postingan';
+            $id('postDeleteBtn').classList.toggle('hidden', !post);
+            let lastPf = 'TikTok';
+            try { lastPf = localStorage.getItem('postLastPlatform') || 'TikTok'; } catch (e) {}
+            const set = (k, v) => { $id(k).value = (v === null || v === undefined) ? '' : v; };
+            set('postDate', post ? post.date : utcToYmd(todayUtc()));
+            set('postPlatform', post ? (post.platform || 'Lainnya') : lastPf);
+            set('postProduct', post ? post.product : '');
+            set('postCommission', post ? post.commission : '');
+            set('postViews', post ? post.views : ''); set('postLikes', post ? post.likes : '');
+            set('postComments', post ? post.comments : ''); set('postClicks', post ? post.clicks : '');
+            set('postOrders', post ? post.orders : ''); set('postItemsSold', post ? post.itemsSold : '');
+            set('postSales', post ? post.sales : '');
+            set('postUrl', post ? post.url : ''); set('postScript', post ? post.scriptNote : ''); set('postNote', post ? post.note : '');
+            const names = new Set(), prods = new Set();
+            try { (await dbGetAll('characters')).forEach(c => c.name && names.add(c.name)); } catch (e) {}
+            try { (await dbGetAll('projects')).forEach(p => p.product && p.product !== 'Produk Umum' && prods.add(p.product)); } catch (e) {}
+            postsAll.forEach(p => p.product && prods.add(p.product));
+            if (post && post.characterName) names.add(post.characterName);
+            $id('postCharacter').innerHTML = '<option value="">-</option>' + [...names].map(n => `<option value="${escapeHtml(n)}">${escapeHtml(n)}</option>`).join('');
+            set('postCharacter', post ? post.characterName : '');
+            $id('postProductList').innerHTML = [...prods].map(n => `<option value="${escapeHtml(n)}"></option>`).join('');
+            $id('postModal').classList.remove('hidden');
+        }
+        function closePostModal() { $id('postModal').classList.add('hidden'); }
+
+        async function savePost() {
+            const g = id => $id(id).value.trim();
+            const date = g('postDate'), platform = $id('postPlatform').value, product = g('postProduct');
+            if (isNaN(pYmd(date))) { showToast('Tanggal posting wajib diisi.', 'error'); return; }
+            if (!product) { showToast('Nama produk wajib diisi.', 'error'); return; }
+            if (g('postCommission') === '') { showToast('Komisi wajib diisi (isi 0 jika belum ada).', 'error'); return; }
+            const n = id => { const v = g(id); return v === '' ? null : (parseInt(v.replace(/[^\d]/g, ''), 10) || 0); };
+            const rec = {
+                date, platform, product, commission: n('postCommission'),
+                views: n('postViews'), likes: n('postLikes'), comments: n('postComments'), clicks: n('postClicks'),
+                orders: n('postOrders'), itemsSold: n('postItemsSold'), sales: n('postSales'),
+                url: g('postUrl'), characterName: $id('postCharacter').value, scriptNote: g('postScript'), note: g('postNote')
+            };
+            try {
+                const editId = parseInt($id('postId').value, 10);
+                if (editId) {
+                    const old = postsAll.find(p => p.id === editId) || {};
+                    await dbPut('posts', Object.assign({}, old, rec, { id: editId }));
+                } else {
+                    const dup = postsAll.find(p => p.date === date && p.platform === platform && String(p.product || '').trim().toLowerCase() === product.toLowerCase());
+                    if (dup && confirm('Sudah ada catatan untuk produk, platform, dan tanggal yang sama. Perbarui catatan itu dengan angka baru?\n(Batal = simpan sebagai catatan terpisah)')) {
+                        const merged = Object.assign({}, dup);
+                        Object.keys(rec).forEach(k => { if (rec[k] !== null && rec[k] !== '') merged[k] = rec[k]; });
+                        await dbPut('posts', merged);
+                    } else {
+                        await dbAdd('posts', rec);
+                    }
+                }
+                try { localStorage.setItem('postLastPlatform', platform); } catch (e) {}
+                closePostModal();
+                showToast('Catatan postingan tersimpan.', 'success');
+                await loadPostsData();
+            } catch (err) { console.warn(err); showToast('Gagal menyimpan catatan.', 'error'); }
+        }
+
+        async function deletePost() {
+            const id = parseInt($id('postId').value, 10);
+            if (!id || !confirm('Hapus catatan postingan ini?')) return;
+            await dbDelete('posts', id);
+            closePostModal();
+            showToast('Catatan dihapus.', 'success');
+            await loadPostsData();
+        }
+
+        let postResizeTimer = null;
+        window.addEventListener('resize', () => {
+            clearTimeout(postResizeTimer);
+            postResizeTimer = setTimeout(() => { const t = $id('tab-posts'); if (t && !t.classList.contains('hidden')) renderPosts(); }, 200);
+        });
+
         // --- BACKUPS ZIP (semua data; video opsional) ---
-        const BACKUP_STORES = ['projects', 'characters', 'scripts', 'videos', 'items', 'commissions'];
+        const BACKUP_STORES = ['projects', 'characters', 'scripts', 'videos', 'items', 'commissions', 'posts'];
         const safeFileName = s => String(s || 'video').replace(/[^\w.\-]+/g, '_').slice(0, 60);
 
         async function exportBackupZip(withVideos) {
