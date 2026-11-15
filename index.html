@@ -436,7 +436,7 @@
                             </div>
                             <div>
                                 <label class="block text-zinc-400 mb-1">Umur (<span id="ageVal">23</span> th)</label>
-                                <input type="range" id="charAge" min="18" max="30" value="23" oninput="document.getElementById('ageVal').innerText=this.value" class="w-full accent-primary mt-2">
+                                <input type="range" id="charAge" min="18" max="45" value="23" oninput="document.getElementById('ageVal').innerText=this.value" class="w-full accent-primary mt-2">
                             </div>
                         </div>
                         <div>
@@ -530,7 +530,8 @@
                         </div>
                         <div>
                             <label class="block text-zinc-400 mb-1">Outfit / Pakaian</label>
-                            <input type="text" id="charOutfit" value="Casual aesthetic pastel blouse, modern clean look" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2 text-white focus:outline-none focus:border-primary">
+                            <select id="charOutfitSel" onchange="toggleCustomField('charOutfitSel','charOutfit')" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2 text-white focus:outline-none focus:border-primary"></select>
+                            <input type="text" id="charOutfit" placeholder="Tulis outfit sendiri, misal: oversized denim jacket, white tee, jeans" class="hidden mt-1 w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-1.5 text-white focus:outline-none focus:border-primary">
                         </div>
                         <div>
                             <label class="block text-zinc-400 mb-1">Latar Belakang</label>
@@ -755,6 +756,31 @@
                             <label class="block text-zinc-400 mb-1">Durasi Total Video (1 adegan = maks 10 detik)</label>
                             <select id="ugcTotalDur" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-2 py-2 text-white"></select>
                         </div>
+                        <div>
+                            <label class="block text-zinc-400 mb-1">Rasio Video</label>
+                            <select id="ugcRatio" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-2 py-2 text-white">
+                                <option value="9:16">9:16 Vertikal (TikTok / Reels / Shopee Video)</option>
+                                <option value="16:9">16:9 Horizontal (YouTube)</option>
+                                <option value="1:1">1:1 Persegi (Feed)</option>
+                                <option value="4:5">4:5 Potret (Feed Instagram / Facebook)</option>
+                            </select>
+                            <p class="text-[10px] text-zinc-500 mt-1">Banyak generator video (mis. Flow) hanya mendukung 9:16 dan 16:9. Untuk 1:1 / 4:5, atur juga rasionya di generator atau potong di CapCut.</p>
+                        </div>
+                        <div>
+                            <label class="block text-zinc-400 mb-1">Gaya Bicara / Emosi</label>
+                            <select id="ugcToneSel" onchange="toggleCustomField('ugcToneSel','ugcToneCustom')" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-2 py-2 text-white">
+                                <option value="">Bawaan (natural)</option>
+                                <option value="Relaxed, friendly and conversational: warm natural smile, easy relaxed gestures, speaking like a friend giving a recommendation.">Santai &amp; ramah</option>
+                                <option value="Energetic and enthusiastic: bright wide smile, lively hand gestures, upbeat fast pacing, high positive energy.">Semangat &amp; antusias</option>
+                                <option value="Playfully annoyed and exasperated, like scolding a friend who has not tried this yet: furrowed brows, raised voice, head shaking, exasperated hand gestures, then relieved and happy when showing the product.">Marah / kesal ("kok baru tahu!")</option>
+                                <option value="Sad and confiding, sharing a personal problem: softer slower voice, worried brows, downcast eyes, then hopeful when the product solves it.">Sedih / curhat</option>
+                                <option value="Surprised and amazed: wide eyes, raised eyebrows, mouth open in a gasp, animated shocked reaction, then big delighted smile.">Kaget / heboh</option>
+                                <option value="Calm, confident and trustworthy: steady eye contact, measured pace, small reassuring nods, clear explanation.">Tenang &amp; meyakinkan</option>
+                                <option value="Whispering and secretive, sharing an insider tip: leaning toward the camera, lowered voice, glancing around, conspiratorial smile.">Berbisik / rahasia</option>
+                                <option value="__custom__">Custom (tulis sendiri)...</option>
+                            </select>
+                            <input type="text" id="ugcToneCustom" placeholder="Tulis sendiri, misal: sambil tertawa kecil, nada menggoda" class="hidden mt-1 w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-1.5 text-white focus:outline-none focus:border-primary">
+                        </div>
                     </div>
                 </div>
 
@@ -838,8 +864,17 @@
                             <button onclick="describeProductAI('dance')" class="mt-1 text-[11px] text-primary hover:underline flex items-center gap-1"><i data-lucide="sparkles" class="w-3 h-3"></i> Deskripsikan foto otomatis via AI Vision</button>
                         </div>
                         <div>
-                            <label class="block text-zinc-400 mb-1">Catatan Musik</label>
-                            <input type="text" id="danceMusic" value="DJ Remix Viral TikTok Terbaru" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2 text-white">
+                            <label class="block text-zinc-400 mb-1">Musik</label>
+                            <select id="danceMusicSel" onchange="toggleCustomField('danceMusicSel','danceMusic')" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2 text-white focus:outline-none focus:border-primary">
+                                <option value="DJ Remix Viral TikTok Terbaru">DJ Remix Viral TikTok</option>
+                                <option value="Cheerful upbeat pop">Pop ceria (upbeat)</option>
+                                <option value="Energetic K-Pop dance beat">K-Pop beat energik</option>
+                                <option value="Dangdut koplo remix">Dangdut koplo</option>
+                                <option value="Chill lo-fi beat">Lo-fi santai</option>
+                                <option value="EDM dance pop">EDM / dance pop</option>
+                                <option value="__custom__">Custom (tulis sendiri)...</option>
+                            </select>
+                            <input type="text" id="danceMusic" placeholder="Tulis vibe musik sendiri..." class="hidden mt-1 w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-1.5 text-white focus:outline-none focus:border-primary">
                         </div>
                         <div>
                             <label class="block text-zinc-400 mb-1">Teks / Hook Singkat (opsional)</label>
@@ -860,6 +895,29 @@
                         <div>
                             <label class="block text-zinc-400 mb-1">Durasi Total Video (1 adegan = maks 10 detik)</label>
                             <select id="danceTotalDur" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-2 py-2 text-white"></select>
+                        </div>
+                        <div>
+                            <label class="block text-zinc-400 mb-1">Rasio Video</label>
+                            <select id="danceRatio" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-2 py-2 text-white">
+                                <option value="9:16">9:16 Vertikal (TikTok / Reels / Shopee Video)</option>
+                                <option value="16:9">16:9 Horizontal (YouTube)</option>
+                                <option value="1:1">1:1 Persegi (Feed)</option>
+                                <option value="4:5">4:5 Potret (Feed Instagram / Facebook)</option>
+                            </select>
+                            <p class="text-[10px] text-zinc-500 mt-1">Banyak generator video (mis. Flow) hanya mendukung 9:16 dan 16:9. Untuk 1:1 / 4:5, atur juga rasionya di generator atau potong di CapCut.</p>
+                        </div>
+                        <div>
+                            <label class="block text-zinc-400 mb-1">Mood / Ekspresi</label>
+                            <select id="danceToneSel" onchange="toggleCustomField('danceToneSel','danceToneCustom')" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-2 py-2 text-white">
+                                <option value="">Bawaan (natural)</option>
+                                <option value="Cheerful and bubbly mood: big smiles, playful energy.">Ceria</option>
+                                <option value="Cute and flirty mood: sweet smiles, playful winks, charming gestures.">Centil &amp; manis</option>
+                                <option value="Relaxed and chill mood: soft smile, easygoing smooth moves.">Santai</option>
+                                <option value="High-energy and powerful mood: confident expression, sharp energetic moves.">Energik</option>
+                                <option value="Elegant and graceful mood: poised expression, smooth flowing moves.">Elegan</option>
+                                <option value="__custom__">Custom (tulis sendiri)...</option>
+                            </select>
+                            <input type="text" id="danceToneCustom" placeholder="Tulis sendiri, misal: sambil tertawa kecil, nada menggoda" class="hidden mt-1 w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-1.5 text-white focus:outline-none focus:border-primary">
                         </div>
                     </div>
                 </div>
@@ -1578,11 +1636,71 @@
             showToast('Skenario komisi disimpan!', 'success');
         }
 
+
+        // --- PILIHAN + CUSTOM, USIA VISUAL, OUTFIT SESUAI GENDER ---
+        function toggleCustomField(selId, inputId) {
+            const sel = document.getElementById(selId), inp = document.getElementById(inputId);
+            if (sel && inp) inp.classList.toggle('hidden', sel.value !== '__custom__');
+        }
+        function pickValue(selId, inputId, fallback) {
+            const sel = document.getElementById(selId);
+            if (!sel) return fallback || '';
+            if (sel.value === '__custom__') {
+                const inp = document.getElementById(inputId);
+                const v = inp ? inp.value.trim() : '';
+                return v || fallback || '';
+            }
+            return sel.value;
+        }
+
+        function ageLook(age) {
+            age = parseInt(age, 10) || 23;
+            if (age <= 21) return 'youthful late-teens look, fresh soft face, very smooth skin';
+            if (age <= 25) return 'young adult face, smooth clear skin, youthful features';
+            if (age <= 30) return 'mature young-adult face, natural skin texture with visible pores, subtle fine lines at the corners of the eyes and smile lines, not a teenage look, unretouched skin';
+            if (age <= 35) return 'clearly an adult in their early-to-mid 30s, more defined facial structure, visible smile lines and fine lines around the eyes, natural skin texture, unretouched skin';
+            if (age <= 40) return 'clearly in their late 30s, mature face, visible fine lines around the eyes and forehead, defined smile lines, natural skin texture, unretouched skin';
+            return 'clearly middle-aged in their 40s, mature face, visible wrinkles around the eyes and forehead, nasolabial folds, some gray hair strands, natural skin imperfections, unretouched skin';
+        }
+
+        const OUTFIT_OPTIONS = {
+            'Perempuan': [
+                ['Blouse pastel kasual', 'Casual aesthetic pastel blouse, modern clean look'],
+                ['Dress kasual', 'Simple casual midi dress, soft colors, modern look'],
+                ['Kemeja / blazer kantor', 'Smart casual office blouse with a light blazer'],
+                ['Gamis / muslimah sopan', 'Modest long tunic and skirt set, modern muslimah style'],
+                ['Kaos + cardigan', 'Plain t-shirt with a knit cardigan, relaxed everyday look'],
+                ['Streetwear / hoodie', 'Oversized hoodie with jeans, trendy streetwear look'],
+                ['Olahraga (activewear)', 'Sporty activewear set, athletic look']
+            ],
+            'Laki-laki': [
+                ['Kemeja kasual polos', 'Casual plain button-up shirt, clean modern look'],
+                ['Kaos polos + jaket denim', 'Plain t-shirt with a denim jacket, relaxed everyday look'],
+                ['Batik modern', 'Modern batik shirt, smart and neat'],
+                ['Kemeja + blazer kantor', 'Smart casual office shirt with a blazer'],
+                ['Baju koko / muslim', 'Modern koko muslim shirt, neat and modest'],
+                ['Hoodie streetwear', 'Oversized hoodie with jeans, trendy streetwear look'],
+                ['Polo / olahraga', 'Sporty polo shirt or athletic wear']
+            ]
+        };
+        function populateOutfitOptions() {
+            const sel = document.getElementById('charOutfitSel');
+            const g = document.getElementById('charGender');
+            if (!sel || !g) return;
+            const list = OUTFIT_OPTIONS[g.value] || OUTFIT_OPTIONS['Perempuan'];
+            const prev = sel.value;
+            sel.innerHTML = list.map(o => `<option value="${escapeHtml(o[1])}">${escapeHtml(o[0])}</option>`).join('') + '<option value="__custom__">Custom (tulis sendiri)...</option>';
+            if (prev === '__custom__') sel.value = '__custom__';
+            else if (list.some(o => o[1] === prev)) sel.value = prev;
+            toggleCustomField('charOutfitSel', 'charOutfit');
+        }
+
         // --- ISSUE 1 & 2: UNIFIED CHARACTER BUILDER & PROFILES ---
         function toggleGenderOptions() {
             const gender = document.getElementById('charGender').value;
             document.getElementById('femaleHairGroup').classList.toggle('hidden', gender === 'Laki-laki');
             document.getElementById('hijabGroup').classList.toggle('hidden', gender === 'Laki-laki');
+            populateOutfitOptions();
         }
         function toggleHijabOptions() {
             document.getElementById('hijabDetails').classList.toggle('hidden', document.getElementById('charHijab').value !== 'Ya');
@@ -1601,13 +1719,13 @@
             const hijabModel = document.getElementById('charHijabModel').value;
             const eyes = document.getElementById('charEyes').value;
             const height = document.getElementById('charHeight').value;
-            const outfit = document.getElementById('charOutfit').value;
+            const outfit = pickValue('charOutfitSel', 'charOutfit', 'Casual modern outfit');
             const bg = document.getElementById('charBackground').value;
             const lighting = document.getElementById('charLighting').value;
             const expression = document.getElementById('charExpression').value;
 
             let hijabStr = hijab === 'Ya' ? `wearing ${hijabColor} ${hijabModel} hijab` : `hair: ${hair}`;
-            return `A hyper-realistic close-up portrait photo of an Indonesian ${gender.toLowerCase()}, age ${age}, ${ethnicity} ethnicity, ${skin} skin tone, ${faceShape} face shape, ${eyes} eyes, height ${height}cm. ${hijabStr}. Outfit: ${outfit}. Background: ${bg}. Lighting: ${lighting}. Expression: ${expression}. Photorealistic, professional.`;
+            return `A hyper-realistic close-up portrait photo of an Indonesian ${gender.toLowerCase()}, age ${age} (${ageLook(age)}), ${ethnicity} ethnicity, ${skin} skin tone, ${faceShape} face shape, ${eyes} eyes, height ${height}cm. ${hijabStr}. Outfit: ${outfit}. Background: ${bg}. Lighting: ${lighting}. Expression: ${expression}. Photorealistic, professional.`;
         }
 
         function generateMasterPrompt() {
@@ -1979,12 +2097,12 @@
 
         function kindCfg(kind) {
             return kind === 'dance' ? {
-                sel: 'danceCharSelector', box: 'danceCharPreviewBox', grid: 'danceProductPreviewGrid',
+                ratio: 'danceRatio', tone: 'danceToneSel', toneCustom: 'danceToneCustom', sel: 'danceCharSelector', box: 'danceCharPreviewBox', grid: 'danceProductPreviewGrid',
                 name: 'danceProduct', desc: 'danceProdDesc', script: 'danceScriptInput',
                 bg: 'danceBackground', bgCustom: 'danceBgCustom', light: 'danceLighting', dur: 'danceTotalDur',
                 out: 'danceOutputContainer', label: 'Joget', photos: () => danceProductPhotos
             } : {
-                sel: 'ugcCharSelector', box: 'ugcCharPreviewBox', grid: 'ugcProductPreviewGrid',
+                ratio: 'ugcRatio', tone: 'ugcToneSel', toneCustom: 'ugcToneCustom', sel: 'ugcCharSelector', box: 'ugcCharPreviewBox', grid: 'ugcProductPreviewGrid',
                 name: 'ugcProdName', desc: 'ugcProdDesc', script: 'ugcScriptInput',
                 bg: 'ugcBackground', bgCustom: 'ugcBgCustom', light: 'ugcLighting', dur: 'ugcTotalDur',
                 out: 'ugcOutputContainer', label: 'UGC', photos: () => ugcProductPhotos
@@ -2212,7 +2330,10 @@
             const charDesc = ch ? (cleanCharacterPrompt(ch.prompt) || ch.name) : 'friendly Indonesian affiliate talent';
             const charName = ch ? ch.name : '';
             const style = kind === 'dance' ? ($id('danceStyle').value || '') : '';
-            const music = kind === 'dance' ? ($id('danceMusic').value || '') : '';
+            const music = kind === 'dance' ? pickValue('danceMusicSel', 'danceMusic', 'DJ Remix Viral TikTok Terbaru') : '';
+            const ratio = ($id(c.ratio) && $id(c.ratio).value) || '9:16';
+            const ratioWord = { '9:16': 'vertical', '16:9': 'horizontal', '1:1': 'square', '4:5': 'portrait' }[ratio] || 'vertical';
+            const tone = pickValue(c.tone, c.toneCustom, '');
             const productLine = `"${prod}"${desc ? ' (' + desc + ')' : ''}`;
 
             const head = kind === 'dance' ? 'Dance Video Master Prompt' : 'UGC Master Prompt';
@@ -2220,7 +2341,8 @@
             master += kind === 'dance'
                 ? ` The talent dances "${style}" while holding product ${productLine}. Music vibe: ${music}.`
                 : ` The talent presents product ${productLine} in a natural UGC review style.`;
-            master += ` Setting: ${bg}. Lighting: ${light}. Vertical 9:16 video, total ${total} seconds made of ${count} clip(s) of max ${MAX_SCENE_SECONDS} seconds each.`;
+            master += ` Setting: ${bg}. Lighting: ${light}. ${ratioWord.charAt(0).toUpperCase() + ratioWord.slice(1)} ${ratio} video, total ${total} seconds made of ${count} clip(s) of max ${MAX_SCENE_SECONDS} seconds each.`;
+            if (tone) master += ` ${kind === 'dance' ? 'Mood' : 'Tone and delivery'}: ${tone}`;
             if (scriptForPrompt) master += `\nScript / narration:\n${scriptForPrompt}`;
             master += PRODUCT_FIDELITY_BLOCK;
 
@@ -2228,11 +2350,12 @@
             const dialogue = splitScriptParts(scriptForPrompt, count);
             const scenes = plan.map((p, i) => {
                 const a = i * MAX_SCENE_SECONDS, b = Math.min(total, a + MAX_SCENE_SECONDS);
-                let t = `[Scene ${i + 1} of ${count} | ${a}-${b}s | max ${MAX_SCENE_SECONDS} seconds | vertical 9:16]\n`;
+                let t = `[Scene ${i + 1} of ${count} | ${a}-${b}s | max ${MAX_SCENE_SECONDS} seconds | ${ratioWord} ${ratio}]\n`;
                 t += `Character: ${charDesc}, same person as the reference photo.\n`;
                 t += `Product: ${productLine}.\n`;
                 t += `Setting: ${bg}. Lighting: ${light}.\n`;
                 t += `Action: ${p.act}${kind === 'dance' && style ? ' Dance style: ' + style + '.' : ''}\n`;
+                if (tone) t += `${kind === 'dance' ? 'Mood' : 'Delivery'}: ${tone}\n`;
                 if (i > 0) t += `Continue from the previous scene, same character, same outfit, same background.\n`;
                 if (dialogue[i]) t += `Voice-over / dialogue (Indonesian): "${dialogue[i]}"\n`;
                 if (kind === 'dance' && music) t += `Music: ${music}.\n`;
@@ -2750,7 +2873,7 @@
         // --- INITIALIZATION ---
         window.onload = async function() {
             try { updateThemeButtons(); } catch(e) {}
-            try { initSceneOptions(); capturePlaceholders(); } catch(e) { console.warn(e); }
+            try { initSceneOptions(); capturePlaceholders(); toggleGenderOptions(); } catch(e) { console.warn(e); }
             try {
                 await initDB();
                 if(navigator.storage && navigator.storage.persist) navigator.storage.persist();
