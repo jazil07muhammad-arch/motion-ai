@@ -788,6 +788,17 @@
                             <select id="ugcTotalDur" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-2 py-2 text-white"></select>
                         </div>
                         <div>
+                            <label class="block text-zinc-400 mb-1">Format Video</label>
+                            <select id="ugcFormat" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-2 py-2 text-white">
+                                <option value="">Review natural (bawaan)</option>
+                                <option value="unboxing">Unboxing / membuka kemasan</option>
+                                <option value="mirror">Mirror UGC (bercermin)</option>
+                                <option value="pov">POV tangan (tanpa wajah)</option>
+                                <option value="tryon">Coba pakai</option>
+                            </select>
+                            <p class="text-[11px] text-zinc-500 mt-1">Mengatur sudut kamera dan urutan adegan. Pilihan bawaan sama seperti sebelumnya.</p>
+                        </div>
+                        <div>
                             <label class="block text-zinc-400 mb-1">Rasio Video</label>
                             <select id="ugcRatio" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-2 py-2 text-white">
                                 <option value="9:16">9:16 Vertikal (TikTok / Reels / Shopee Video)</option>
@@ -1033,9 +1044,14 @@
                     <h2 class="text-xl font-bold text-white flex items-center gap-2"><i data-lucide="trending-up" class="w-5 h-5 text-primary"></i> Catatan Postingan</h2>
                     <p class="text-sm text-zinc-400 mt-1">Catat hasil postingan affiliate dari TikTok, Shopee Video, dan Facebook, lalu lihat grafiknya di satu tempat.</p>
                 </div>
-                <button onclick="openPostModal()" class="px-4 py-2.5 bg-primary hover:bg-violet-600 text-white rounded-xl text-sm font-bold flex items-center gap-2"><i data-lucide="plus" class="w-4 h-4"></i> Catat Postingan</button>
+                <button id="postAddBtn" onclick="openPostModal()" class="px-4 py-2.5 bg-primary hover:bg-violet-600 text-white rounded-xl text-sm font-bold flex items-center gap-2"><i data-lucide="plus" class="w-4 h-4"></i> Catat Postingan</button>
             </div>
 
+            <div class="flex gap-2 p-1.5 bg-cardBg border border-cardBorder rounded-2xl">
+                <button id="postsView_perf" onclick="setPostsView('perf')" class="flex-1 py-2.5 rounded-lg text-sm font-semibold bg-primary text-white" aria-pressed="true">Performa</button>
+                <button id="postsView_plan" onclick="setPostsView('plan')" class="flex-1 py-2.5 rounded-lg text-sm font-semibold bg-zinc-900 text-zinc-300 hover:bg-zinc-800" aria-pressed="false">Rencana</button>
+            </div>
+            <div id="postsPerf" class="space-y-4">
             <div class="bg-cardBg border border-cardBorder rounded-2xl p-4 space-y-3">
                 <div id="postPeriodChips" class="flex flex-wrap gap-2"></div>
                 <div id="postCustomRange" class="hidden"><div class="grid grid-cols-2 gap-2 text-xs">
@@ -1085,6 +1101,45 @@
                 </div>
                 <div id="postContents" class="space-y-2"></div>
                 <button id="postShowAllBtn" onclick="togglePostShowAll()" class="hidden w-full py-2 bg-zinc-900 border border-cardBorder text-zinc-300 rounded-xl text-xs font-semibold"></button>
+            </div>
+            </div>
+            <div id="postsPlan" class="hidden space-y-4">
+                <div class="bg-cardBg border border-cardBorder rounded-2xl p-4 space-y-3">
+                    <div class="flex items-center justify-between gap-2">
+                        <div>
+                            <h3 class="font-bold text-white text-base">Rencana Posting</h3>
+                            <p class="text-xs text-zinc-400 mt-0.5">Agenda 30 hari ke depan. Ketuk + pada tanggal untuk menambah rencana.</p>
+                        </div>
+                        <button onclick="openPlanModal()" class="px-4 py-2.5 bg-primary hover:bg-violet-600 text-white rounded-xl text-sm font-bold shrink-0">+ Rencana</button>
+                    </div>
+                    <div id="planStats" class="grid grid-cols-2 md:grid-cols-4 gap-2"></div>
+                    <input type="text" id="planSearch" oninput="onPlanFilter()" placeholder="Cari judul, produk, atau catatan..." class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary">
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <select id="planFilterPf" onchange="onPlanFilter()" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-2 py-2 text-white">
+                            <option value="">Semua platform</option><option value="TikTok">TikTok</option><option value="Shopee Video">Shopee Video</option><option value="Facebook">Facebook</option><option value="Lainnya">Lainnya</option>
+                        </select>
+                        <select id="planFilterSt" onchange="onPlanFilter()" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-2 py-2 text-white">
+                            <option value="">Semua status</option><option value="Ide">Ide</option><option value="Draft">Draft</option><option value="Siap">Siap</option><option value="Terbit">Terbit</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+                        <label class="flex items-center gap-2 text-zinc-300"><input type="checkbox" id="planHideEmpty" onchange="onPlanFilter()"> Sembunyikan hari kosong</label>
+                        <div class="flex gap-2">
+                            <button onclick="resetPlanFilter()" class="px-3 py-1.5 bg-zinc-900 border border-cardBorder text-zinc-300 rounded-lg font-semibold">Reset</button>
+                            <button onclick="exportPlansCsv()" class="px-3 py-1.5 bg-zinc-900 border border-cardBorder text-zinc-300 rounded-lg font-semibold">Ekspor CSV</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-cardBg border border-cardBorder rounded-2xl p-4 space-y-3">
+                    <h3 class="font-bold text-white text-base">Bank Ide (<span id="planBankCount">0</span>)</h3>
+                    <p class="text-xs text-zinc-400">Rencana tanpa tanggal. Isi tanggalnya lewat tombol Ubah untuk memasukkannya ke jadwal.</p>
+                    <div id="planBank" class="space-y-2"></div>
+                </div>
+                <div class="bg-cardBg border border-cardBorder rounded-2xl p-4 space-y-3">
+                    <h3 class="font-bold text-white text-base">Jadwal 30 Hari</h3>
+                    <p class="text-xs text-zinc-400">Rencana yang sudah terbit dicatat performanya di tab Performa lewat tombol Terbit → Catat.</p>
+                    <div id="planAgenda" class="space-y-2"></div>
+                </div>
             </div>
         </section>
 
@@ -1191,6 +1246,41 @@
             <textarea id="copyModalTextarea" rows="6" class="w-full bg-zinc-900 border border-cardBorder rounded-xl p-3 text-xs text-zinc-200 font-mono focus:outline-none"></textarea>
             <div class="flex justify-end">
                 <button onclick="closeCopyModal()" class="px-4 py-2 bg-primary text-white rounded-xl text-xs font-semibold">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Rencana Posting -->
+    <div id="planModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-start md:items-center justify-center p-3 overflow-y-auto hidden">
+        <div class="bg-cardBg border border-cardBorder rounded-2xl max-w-lg w-full p-5 space-y-4 my-4">
+            <div class="flex items-center justify-between">
+                <h3 id="planModalTitle" class="font-bold text-white text-base">Tambah Rencana</h3>
+                <button onclick="closePlanModal()" class="text-zinc-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <input type="hidden" id="planId">
+            <div class="space-y-3 text-xs">
+                <div><label class="block text-zinc-400 mb-1">Judul / hook *</label><input type="text" id="planTitle" placeholder="Misal: Unboxing serum, reaksi pertama" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"></div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div><label class="block text-zinc-400 mb-1">Platform</label><select id="planPlatform"  class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"><option value="TikTok">TikTok</option><option value="Shopee Video">Shopee Video</option><option value="Facebook">Facebook</option><option value="Lainnya">Lainnya</option></select></div>
+                    <div><label class="block text-zinc-400 mb-1">Status</label><select id="planStatus"  class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"><option value="Ide">Ide</option><option value="Draft">Draft</option><option value="Siap">Siap</option><option value="Terbit">Terbit</option></select></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div><label class="block text-zinc-400 mb-1">Tanggal (kosongkan = Bank Ide)</label><input type="date" id="planDate" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"></div>
+                    <div><label class="block text-zinc-400 mb-1">Jam (opsional)</label><input type="time" id="planTime" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"></div>
+                </div>
+                <div><label class="block text-zinc-400 mb-1">Produk</label><input type="text" id="planProduct" list="planProductList" placeholder="Nama produk" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"><datalist id="planProductList"></datalist></div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div><label class="block text-zinc-400 mb-1">Format</label><select id="planFormat"  class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"><option value="Review natural">Review natural</option><option value="Unboxing">Unboxing</option><option value="Mirror UGC">Mirror UGC</option><option value="POV tangan">POV tangan</option><option value="Coba pakai">Coba pakai</option><option value="Joget">Joget</option><option value="Lainnya">Lainnya</option></select></div>
+                    <div><label class="block text-zinc-400 mb-1">Tautkan ke simpanan</label><select id="planLink" class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"><option value="">-</option></select></div>
+                </div>
+                <div><label class="block text-zinc-400 mb-1">Catatan</label><textarea id="planNote" rows="2" placeholder="Misal: pakai karakter Sherin, musik DJ remix..." class="w-full bg-zinc-900 border border-cardBorder rounded-xl px-3 py-2.5 text-white text-sm resize-none"></textarea></div>
+            </div>
+            <div class="flex items-center justify-between gap-2 pt-1">
+                <button id="planDeleteBtn" onclick="deletePlan()" class="hidden px-4 py-2.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 rounded-xl text-xs font-semibold">Hapus</button>
+                <div class="flex gap-2 ml-auto">
+                    <button onclick="closePlanModal()" class="px-4 py-2.5 bg-zinc-800 text-zinc-300 rounded-xl text-xs font-semibold">Batal</button>
+                    <button onclick="savePlan()" class="px-5 py-2.5 bg-primary hover:bg-violet-600 text-white rounded-xl text-xs font-bold">Simpan</button>
+                </div>
             </div>
         </div>
     </div>
@@ -1355,7 +1445,7 @@
 
         // --- INDEXEDDB & PERMANENT STORAGE ---
         const DB_NAME = 'MotionAIToolsDB_v31';
-        const DB_VERSION = 3;
+        const DB_VERSION = 4;
         let db = null;
         let activeProjectId = null;
         let ugcProductPhotos = [];
@@ -1372,7 +1462,7 @@
                 };
                 request.onupgradeneeded = (e) => {
                     const database = e.target.result;
-                    const stores = ['projects', 'characters', 'scripts', 'videos', 'items', 'commissions', 'clips', 'posts'];
+                    const stores = ['projects', 'characters', 'scripts', 'videos', 'items', 'commissions', 'clips', 'posts', 'plans'];
                     stores.forEach(store => {
                         if (!database.objectStoreNames.contains(store)) {
                             database.createObjectStore(store, { keyPath: 'id', autoIncrement: true });
@@ -2448,6 +2538,64 @@
             return parts.map(p => p.join(' '));
         }
 
+
+        // --- FORMAT UGC (unboxing, mirror, POV tangan, coba pakai) ---
+        const CTA_TXT = 'the yellow basket / shopping cart';
+        const UGC_FORMATS = {
+            unboxing: {
+                label: 'Unboxing',
+                master: 'Video format: unboxing. The talent opens the product package on camera and reveals the product.',
+                roles: ['Hook: Paket Tiba', 'Buka Kemasan & Demo', 'Reaksi & CTA'],
+                acts: [
+                    'Close-up of the talent at a table with the sealed product package in front of them, hands starting to open the package, excited expression, glancing at the camera to hook the viewer.',
+                    'Medium shot of the talent taking the product out of the packaging, turning it to show the front, the label and the details clearly to the camera.',
+                    'Talent holds the opened product up to the camera with a happy reaction, gives a quick honest verdict and points to ' + CTA_TXT + ' as the call to action.'
+                ],
+                single: 'Talent opens the product package on a table, takes the product out, shows it clearly to the camera with a happy reaction, and points to ' + CTA_TXT + '.'
+            },
+            mirror: {
+                label: 'Mirror UGC',
+                master: 'Video format: mirror selfie UGC. The talent films themselves in a mirror; the phone is partly visible in the reflection. Keep the product label correct and readable (not mirrored).',
+                roles: ['Hook: Cermin', 'Isi / Demo di Cermin', 'CTA / Penutup'],
+                acts: [
+                    'Mirror selfie shot: the talent stands in front of a mirror holding the phone at chest level (phone partly visible in the reflection) and the product in the other hand, excited expression.',
+                    'Same mirror selfie framing: the talent turns slightly and shows the product details and how it is used, the reflection stays natural.',
+                    'Mirror selfie: the talent smiles at the reflection, holds the product toward the mirror and gestures toward ' + CTA_TXT + ' as the call to action.'
+                ],
+                single: 'Mirror selfie shot with the phone visible in the reflection; the talent shows the product clearly, gives a quick honest review and points to ' + CTA_TXT + '.'
+            },
+            pov: {
+                label: 'POV tangan',
+                handsOnly: true,
+                master: 'Video format: first-person hands-only POV review. Only the talent\'s hands and forearms are visible; the face is never shown.',
+                roles: ['Hook: Tangan & Produk', 'Isi / Demo', 'CTA / Penutup'],
+                acts: [
+                    'First-person POV close-up: only the talent\'s hands are visible, picking up the product and presenting it to the camera. No face is shown.',
+                    'POV close-up of the hands showing the product details, texture and how it is used, steady camera. No face is shown.',
+                    'POV shot of the hands holding the product toward the camera, then a finger points to ' + CTA_TXT + ' as the call to action. No face is shown.'
+                ],
+                single: 'First-person POV: only the hands are visible, presenting the product clearly, demonstrating it briefly and pointing to ' + CTA_TXT + '. No face is shown.'
+            },
+            tryon: {
+                label: 'Coba pakai',
+                master: 'Video format: first-time try-on. The talent actually uses the product on camera and shows the result.',
+                roles: ['Hook: Mau Coba', 'Pemakaian', 'Hasil & CTA'],
+                acts: [
+                    'Close-up of the talent holding the product and saying they will try it now, curious and excited, looking at the camera.',
+                    'Medium shot of the talent actually using / wearing / applying the product step by step so the usage is clearly visible.',
+                    'Talent shows the result after trying it, smiles happily, holds the product toward the camera and points to ' + CTA_TXT + ' as the call to action.'
+                ],
+                single: 'Talent tries the product on camera, shows the result with a happy reaction, and points to ' + CTA_TXT + '.'
+            }
+        };
+        function formatPlan(fmt, count) {
+            if (count === 1) return [{ role: 'Hook + CTA', act: fmt.single }];
+            return Array.from({ length: count }, (_, i) => {
+                const k = i === 0 ? 0 : (i === count - 1 ? 2 : 1);
+                return { role: fmt.roles[k], act: fmt.acts[k] };
+            });
+        }
+
         function getScenePlan(kind, count) {
             if (kind === 'dance') {
                 const roles = ['Intro Dance', 'Product Showcase', 'Closing & CTA'];
@@ -2497,6 +2645,8 @@
             const ratio = ($id(c.ratio) && $id(c.ratio).value) || '9:16';
             const ratioWord = { '9:16': 'vertical', '16:9': 'horizontal', '1:1': 'square', '4:5': 'portrait' }[ratio] || 'vertical';
             const tone = pickValue(c.tone, c.toneCustom, '');
+            const fmtKey = kind === 'ugc' ? (($id('ugcFormat') || {}).value || '') : '';
+            const fmt = UGC_FORMATS[fmtKey] || null;
             const productLine = `"${prod}"${desc ? ' (' + desc + ')' : ''}`;
 
             const head = kind === 'dance' ? 'Dance Video Master Prompt' : 'UGC Master Prompt';
@@ -2504,17 +2654,20 @@
             master += kind === 'dance'
                 ? ` The talent dances "${style}" while holding product ${productLine}. Music vibe: ${music}.`
                 : ` The talent presents product ${productLine} in a natural UGC review style.`;
+            if (fmt) master += ' ' + fmt.master;
             master += ` Setting: ${bg}. Lighting: ${light}. ${ratioWord.charAt(0).toUpperCase() + ratioWord.slice(1)} ${ratio} video, total ${total} seconds made of ${count} clip(s) of max ${MAX_SCENE_SECONDS} seconds each.`;
             if (tone) master += ` ${kind === 'dance' ? 'Mood' : 'Tone and delivery'}: ${tone}`;
             if (scriptForPrompt) master += `\nScript / narration:\n${scriptForPrompt}`;
             master += PRODUCT_FIDELITY_BLOCK;
 
-            const plan = getScenePlan(kind, count);
+            const plan = fmt ? formatPlan(fmt, count) : getScenePlan(kind, count);
             const dialogue = splitScriptParts(scriptForPrompt, count);
             const scenes = plan.map((p, i) => {
                 const a = i * MAX_SCENE_SECONDS, b = Math.min(total, a + MAX_SCENE_SECONDS);
                 let t = `[Scene ${i + 1} of ${count} | ${a}-${b}s | max ${MAX_SCENE_SECONDS} seconds | ${ratioWord} ${ratio}]\n`;
-                t += `Character: ${charDesc}, same person as the reference photo.\n`;
+                t += fmt && fmt.handsOnly
+                    ? `Character: only the hands and forearms of the talent are visible, matching the skin tone of the reference photo; the face is not shown.\n`
+                    : `Character: ${charDesc}, same person as the reference photo.\n`;
                 t += `Product: ${productLine}.\n`;
                 t += `Setting: ${bg}. Lighting: ${light}.\n`;
                 t += `Action: ${p.act}${kind === 'dance' && style ? ' Dance style: ' + style + '.' : ''}\n`;
@@ -2526,7 +2679,7 @@
                 t += PRODUCT_FIDELITY_BLOCK;
                 return { title: `Adegan ${i + 1} (${a}-${b}s): ${p.role}`, prompt: t, seconds: b - a };
             });
-            return { kind, title: `${c.label} - ${prod}`, productName: prod, masterPrompt: master, scenes, totalDuration: total, capcutText };
+            return { kind, format: fmtKey, title: `${c.label} - ${prod}${fmt ? ' (' + fmt.label + ')' : ''}`, productName: prod, masterPrompt: master, scenes, totalDuration: total, capcutText };
         }
 
         function renderStoryboard(kind, data) {
@@ -2976,7 +3129,7 @@
         const MONTHS_ID = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
         const DAY_MS = 86400000;
         let postsAll = [];
-        const PS = { period: '7d', from: '', to: '', gran: 'day', metric: 'commission', hidden: {}, showAll: false, table: false };
+        const PS = { view: 'perf', period: '7d', from: '', to: '', gran: 'day', metric: 'commission', hidden: {}, showAll: false, table: false };
 
         function fmtInt(n) { return String(Math.round(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
         function fmtRp(n) { return 'Rp ' + fmtInt(n); }
@@ -3042,7 +3195,7 @@
 
         async function loadPostsData() {
             try { postsAll = await dbGetAll('posts'); } catch (e) { postsAll = []; }
-            renderPosts();
+            if (PS.view === 'plan') await loadPlansData(); else renderPosts();
         }
 
         function setPostPeriod(p) {
@@ -3232,7 +3385,8 @@
         }
 
         // --- Form catat / ubah / hapus ---
-        async function openPostModal(id) {
+        async function openPostModal(id, prefill) {
+            if (!prefill) window.__planFor = null;
             const post = id ? postsAll.find(p => p.id === id) : null;
             $id('postId').value = post ? post.id : '';
             $id('postModalTitle').textContent = post ? 'Ubah Catatan Postingan' : 'Catat Postingan';
@@ -3257,9 +3411,10 @@
             $id('postCharacter').innerHTML = '<option value="">-</option>' + [...names].map(n => `<option value="${escapeHtml(n)}">${escapeHtml(n)}</option>`).join('');
             set('postCharacter', post ? post.characterName : '');
             $id('postProductList').innerHTML = [...prods].map(n => `<option value="${escapeHtml(n)}"></option>`).join('');
+            if (prefill) Object.keys(prefill).forEach(k => { if ($id(k)) $id(k).value = prefill[k]; });
             $id('postModal').classList.remove('hidden');
         }
-        function closePostModal() { $id('postModal').classList.add('hidden'); }
+        function closePostModal() { window.__planFor = null; $id('postModal').classList.add('hidden'); }
 
         async function savePost() {
             const g = id => $id(id).value.trim();
@@ -3275,22 +3430,27 @@
                 url: g('postUrl'), characterName: $id('postCharacter').value, scriptNote: g('postScript'), note: g('postNote')
             };
             try {
+                let savedId = null;
                 const editId = parseInt($id('postId').value, 10);
                 if (editId) {
                     const old = postsAll.find(p => p.id === editId) || {};
                     await dbPut('posts', Object.assign({}, old, rec, { id: editId }));
+                    savedId = editId;
                 } else {
                     const dup = postsAll.find(p => p.date === date && p.platform === platform && String(p.product || '').trim().toLowerCase() === product.toLowerCase());
                     if (dup && confirm('Sudah ada catatan untuk produk, platform, dan tanggal yang sama. Perbarui catatan itu dengan angka baru?\n(Batal = simpan sebagai catatan terpisah)')) {
                         const merged = Object.assign({}, dup);
                         Object.keys(rec).forEach(k => { if (rec[k] !== null && rec[k] !== '') merged[k] = rec[k]; });
                         await dbPut('posts', merged);
+                        savedId = dup.id;
                     } else {
-                        await dbAdd('posts', rec);
+                        savedId = await dbAdd('posts', rec);
                     }
                 }
                 try { localStorage.setItem('postLastPlatform', platform); } catch (e) {}
+                const planFor = window.__planFor;
                 closePostModal();
+                if (planFor) await markPlanPublished(planFor, savedId);
                 showToast('Catatan postingan tersimpan.', 'success');
                 await loadPostsData();
             } catch (err) { console.warn(err); showToast('Gagal menyimpan catatan.', 'error'); }
@@ -3311,8 +3471,206 @@
             postResizeTimer = setTimeout(() => { const t = $id('tab-posts'); if (t && !t.classList.contains('hidden')) renderPosts(); }, 200);
         });
 
+        // --- RENCANA POSTING (agenda 30 hari + Bank Ide) ---
+        const PLAN_STATUSES = ['Ide', 'Draft', 'Siap', 'Terbit'];
+        const PLAN_STATUS_CLS = { 'Ide': 'bg-amber-500/15 text-amber-400', 'Draft': 'bg-zinc-700 text-zinc-200', 'Siap': 'bg-primary/20 text-primary', 'Terbit': 'bg-emerald-500/15 text-emerald-400' };
+        const PLAN_FORMATS = ['Review natural', 'Unboxing', 'Mirror UGC', 'POV tangan', 'Coba pakai', 'Joget', 'Lainnya'];
+        const DAYS_ID = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+        let plansAll = [];
+        const PP = { pf: '', st: '', q: '', hideEmpty: false };
+
+        async function loadPlansData() {
+            try { plansAll = await dbGetAll('plans'); } catch (e) { plansAll = []; }
+            renderPlans();
+        }
+
+        function setPostsView(v) {
+            PS.view = v === 'plan' ? 'plan' : 'perf';
+            $id('postsPerf').classList.toggle('hidden', PS.view !== 'perf');
+            $id('postsPlan').classList.toggle('hidden', PS.view !== 'plan');
+            $id('postAddBtn').classList.toggle('hidden', PS.view !== 'perf');
+            ['perf', 'plan'].forEach(k => {
+                const on = PS.view === k;
+                $id('postsView_' + k).className = 'flex-1 py-2.5 rounded-lg text-sm font-semibold ' + (on ? 'bg-primary text-white' : 'bg-zinc-900 text-zinc-300 hover:bg-zinc-800');
+                $id('postsView_' + k).setAttribute('aria-pressed', on);
+            });
+            if (PS.view === 'plan') loadPlansData(); else renderPosts();
+        }
+
+        function planDayLabel(t) { const d = new Date(t); return DAYS_ID[d.getUTCDay()] + ', ' + fmtDay(t); }
+
+        function planCardHtml(p) {
+            const st = PLAN_STATUS_CLS[p.status] ? p.status : 'Ide';
+            const action = p.status === 'Terbit'
+                ? (p.postId ? '<span class="text-xs font-semibold text-emerald-400">✓ Sudah dicatat</span>' : '')
+                : `<button onclick="planPublish(${p.id})" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold">Terbit → Catat</button>`;
+            return `<div class="p-3 rounded-lg bg-zinc-800 border border-cardBorder space-y-1.5">
+                <div class="flex items-start justify-between gap-2">
+                    <div class="text-xs text-zinc-400 flex items-center gap-1.5 min-w-0"><span class="inline-block w-2.5 h-2.5 rounded-full shrink-0" style="background:${pfColor(p.platform)}"></span><span class="truncate">${escapeHtml(p.platform || 'Lainnya')}${p.format ? ' · ' + escapeHtml(p.format) : ''}${p.time ? ' · ' + escapeHtml(p.time) : ''}</span></div>
+                    <span class="px-2 py-0.5 rounded-md text-xs font-semibold shrink-0 ${PLAN_STATUS_CLS[st]}">${st}</span>
+                </div>
+                <div class="text-sm font-bold text-white break-words">${escapeHtml(p.title || '-')}</div>
+                ${p.product ? `<div class="text-xs text-zinc-400">Produk: ${escapeHtml(p.product)}</div>` : ''}
+                ${p.linkedTitle ? `<div class="text-xs text-zinc-400">🔗 ${escapeHtml(p.linkedTitle)}</div>` : ''}
+                ${p.note ? `<div class="text-xs text-zinc-300">${escapeHtml(p.note)}</div>` : ''}
+                <div class="flex flex-wrap items-center gap-2 pt-1">
+                    <button onclick="openPlanModal(${p.id})" class="px-3 py-1.5 bg-zinc-700 text-white rounded-lg text-xs font-semibold">Ubah</button>${action}
+                </div>
+            </div>`;
+        }
+
+        function renderPlans() {
+            if (!$id('planAgenda')) return;
+            const today = todayUtc();
+            const cnt = { siap: 0, draftIde: 0, bank: 0 };
+            const filled = new Set();
+            plansAll.forEach(p => {
+                const t = pYmd(p.date);
+                if (!p.date || isNaN(t)) { cnt.bank++; return; }
+                if (t >= today && t <= today + 29 * DAY_MS) filled.add(t);
+                if (p.status === 'Siap') cnt.siap++;
+                if (p.status === 'Draft' || p.status === 'Ide') cnt.draftIde++;
+            });
+            const stat = (label, val, sub) => `<div class="p-3 rounded-xl border border-cardBorder bg-zinc-900"><div class="text-xs text-zinc-400">${label}</div><div class="text-lg font-bold text-white">${val}</div><div class="text-xs text-zinc-400">${sub}</div></div>`;
+            $id('planStats').innerHTML = stat('Terisi 30 Hari', filled.size + ' / 30', Math.round(filled.size / 30 * 100) + '% terisi') + stat('Siap Tayang', cnt.siap, 'Siap dipublikasikan') + stat('Draft / Ide', cnt.draftIde, 'Perlu disempurnakan') + stat('Bank Ide', cnt.bank, 'Belum masuk jadwal');
+
+            const q = PP.q;
+            const list = plansAll.filter(p => (!PP.pf || p.platform === PP.pf) && (!PP.st || p.status === PP.st) &&
+                (!q || (String(p.title || '') + ' ' + String(p.product || '') + ' ' + String(p.note || '')).toLowerCase().includes(q)));
+            const dated = list.filter(p => p.date && !isNaN(pYmd(p.date)));
+            const bank = list.filter(p => !p.date || isNaN(pYmd(p.date)));
+            const byDate = (a, b) => (pYmd(a.date) - pYmd(b.date)) || ((a.time || '').localeCompare(b.time || ''));
+
+            $id('planBankCount').textContent = bank.length;
+            $id('planBank').innerHTML = bank.length
+                ? bank.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)).map(planCardHtml).join('')
+                : '<p class="text-sm text-zinc-400 py-2">Belum ada ide. Tambahkan rencana tanpa tanggal untuk menyimpannya di sini.</p>';
+
+            const group = (title, items, tone) => items.length ? `<div class="space-y-2"><div class="text-sm font-bold ${tone || 'text-white'}">${title}</div>${items.map(planCardHtml).join('')}</div>` : '';
+            let html = '';
+            const overdue = dated.filter(p => pYmd(p.date) < today && p.status !== 'Terbit').sort(byDate);
+            html += group('Terlewat (belum terbit)', overdue, 'text-rose-400');
+            for (let i = 0; i < 30; i++) {
+                const t = today + i * DAY_MS, ymd = utcToYmd(t);
+                const items = dated.filter(p => p.date === ymd).sort(byDate);
+                if (PP.hideEmpty && !items.length) continue;
+                html += `<div class="border ${i === 0 ? 'border-primary' : 'border-cardBorder'} rounded-xl bg-zinc-900">
+                    <div class="flex items-center justify-between gap-2 px-3 py-2">
+                        <div class="text-sm font-semibold text-white">${planDayLabel(t)}${i === 0 ? ' <span class="text-xs text-primary">Hari ini</span>' : ''}${items.length ? '' : ' <span class="text-xs font-normal text-zinc-500">Kosong</span>'}</div>
+                        <button onclick="openPlanModal(null, '${ymd}')" aria-label="Tambah rencana ${ymd}" class="w-8 h-8 rounded-lg bg-zinc-800 text-white text-lg leading-none">+</button>
+                    </div>
+                    ${items.length ? `<div class="px-2 pb-2 space-y-2">${items.map(planCardHtml).join('')}</div>` : ''}
+                </div>`;
+            }
+            html += group('Lebih dari 30 hari ke depan', dated.filter(p => pYmd(p.date) > today + 29 * DAY_MS).sort(byDate));
+            html += group('Sudah terbit (sebelum hari ini)', dated.filter(p => pYmd(p.date) < today && p.status === 'Terbit').sort((a, b) => byDate(b, a)).slice(0, 10), 'text-emerald-400');
+            $id('planAgenda').innerHTML = html || '<p class="text-sm text-zinc-400 py-3">Tidak ada rencana yang cocok.</p>';
+        }
+
+        function onPlanFilter() {
+            PP.pf = $id('planFilterPf').value; PP.st = $id('planFilterSt').value;
+            PP.q = $id('planSearch').value.trim().toLowerCase(); PP.hideEmpty = $id('planHideEmpty').checked;
+            renderPlans();
+        }
+        function resetPlanFilter() {
+            $id('planFilterPf').value = ''; $id('planFilterSt').value = ''; $id('planSearch').value = ''; $id('planHideEmpty').checked = false;
+            onPlanFilter();
+        }
+
+        async function openPlanModal(id, date) {
+            const plan = id ? plansAll.find(p => p.id === id) : null;
+            const set = (k, v) => { $id(k).value = (v === null || v === undefined) ? '' : v; };
+            $id('planId').value = plan ? plan.id : '';
+            $id('planModalTitle').textContent = plan ? 'Ubah Rencana' : 'Tambah Rencana';
+            $id('planDeleteBtn').classList.toggle('hidden', !plan);
+            set('planTitle', plan ? plan.title : '');
+            set('planPlatform', plan ? (plan.platform || 'Lainnya') : 'TikTok');
+            set('planProduct', plan ? plan.product : '');
+            set('planFormat', plan ? (plan.format || 'Review natural') : 'Review natural');
+            set('planStatus', plan ? plan.status : (date ? 'Draft' : 'Ide'));
+            set('planDate', plan ? plan.date : (date || ''));
+            set('planTime', plan ? plan.time : '');
+            set('planNote', plan ? plan.note : '');
+            const opts = ['<option value="">-</option>'];
+            try { (await dbGetAll('videos')).forEach(v => opts.push(`<option value="v:${v.id}">${escapeHtml('Video: ' + (v.title || v.productName || v.id))}</option>`)); } catch (e) {}
+            try { (await dbGetAll('scripts')).forEach(s => opts.push(`<option value="s:${s.id}">${escapeHtml('Script: ' + (s.productName || s.id))}</option>`)); } catch (e) {}
+            $id('planLink').innerHTML = opts.join('');
+            set('planLink', plan ? plan.linkedKey : '');
+            const prods = new Set();
+            try { (await dbGetAll('projects')).forEach(p => p.product && p.product !== 'Produk Umum' && prods.add(p.product)); } catch (e) {}
+            postsAll.forEach(p => p.product && prods.add(p.product));
+            plansAll.forEach(p => p.product && prods.add(p.product));
+            $id('planProductList').innerHTML = [...prods].map(n => `<option value="${escapeHtml(n)}"></option>`).join('');
+            $id('planModal').classList.remove('hidden');
+        }
+        function closePlanModal() { $id('planModal').classList.add('hidden'); }
+
+        async function savePlan() {
+            const g = id => $id(id).value.trim();
+            const title = g('planTitle');
+            if (!title) { showToast('Judul atau hook wajib diisi.', 'error'); return; }
+            const date = g('planDate');
+            if (date && isNaN(pYmd(date))) { showToast('Format tanggal tidak valid.', 'error'); return; }
+            const sel = $id('planLink');
+            const rec = {
+                title, platform: $id('planPlatform').value, product: g('planProduct'), format: $id('planFormat').value,
+                status: $id('planStatus').value, date, time: g('planTime'), note: g('planNote'),
+                linkedKey: sel.value, linkedTitle: sel.value ? sel.options[sel.selectedIndex].text : '', updatedAt: Date.now()
+            };
+            try {
+                const editId = parseInt($id('planId').value, 10);
+                if (editId) {
+                    const old = plansAll.find(p => p.id === editId) || {};
+                    await dbPut('plans', Object.assign({}, old, rec, { id: editId }));
+                } else {
+                    await dbAdd('plans', rec);
+                }
+                closePlanModal();
+                showToast('Rencana tersimpan.', 'success');
+                await loadPlansData();
+            } catch (err) { console.warn(err); showToast('Gagal menyimpan rencana.', 'error'); }
+        }
+
+        async function deletePlan() {
+            const id = parseInt($id('planId').value, 10);
+            if (!id || !confirm('Hapus rencana ini?')) return;
+            await dbDelete('plans', id);
+            closePlanModal();
+            showToast('Rencana dihapus.', 'success');
+            await loadPlansData();
+        }
+
+        // Terbit -> Catat: buka form Catat Postingan yang sudah terisi dari rencana
+        async function planPublish(id) {
+            const p = plansAll.find(x => x.id === id);
+            if (!p) return;
+            window.__planFor = id;
+            await openPostModal(null, {
+                postDate: (p.date && !isNaN(pYmd(p.date))) ? p.date : utcToYmd(todayUtc()),
+                postPlatform: p.platform || 'Lainnya', postProduct: p.product || '', postScript: p.title || ''
+            });
+            window.__planFor = id; // closePostModal() dari openPostModal tidak dipanggil, tapi pastikan tetap terisi
+        }
+        async function markPlanPublished(planId, postId) {
+            try {
+                const all = await dbGetAll('plans');
+                const p = all.find(x => x.id === planId);
+                if (p) { p.status = 'Terbit'; p.postId = postId; p.updatedAt = Date.now(); await dbPut('plans', p); }
+            } catch (e) { console.warn(e); }
+            if (PS.view === 'plan') await loadPlansData();
+        }
+
+        function exportPlansCsv() {
+            if (!plansAll.length) { showToast('Belum ada rencana untuk diekspor.', 'error'); return; }
+            const esc = v => '"' + String(v === null || v === undefined ? '' : v).replace(/"/g, '""') + '"';
+            const rows = [['Tanggal', 'Jam', 'Platform', 'Produk', 'Judul / Hook', 'Format', 'Status', 'Catatan']];
+            plansAll.slice().sort((a, b) => (pYmd(a.date) || 9e15) - (pYmd(b.date) || 9e15)).forEach(p => rows.push([p.date, p.time, p.platform, p.product, p.title, p.format, p.status, p.note]));
+            downloadBlob(new Blob(['﻿' + rows.map(r => r.map(esc).join(',')).join('\n')], { type: 'text/csv;charset=utf-8' }), 'Rencana_Posting.csv');
+            showToast('Rencana diekspor (CSV).', 'success');
+        }
+
         // --- BACKUPS ZIP (semua data; video opsional) ---
-        const BACKUP_STORES = ['projects', 'characters', 'scripts', 'videos', 'items', 'commissions', 'posts'];
+        const BACKUP_STORES = ['projects', 'characters', 'scripts', 'videos', 'items', 'commissions', 'posts', 'plans'];
         const safeFileName = s => String(s || 'video').replace(/[^\w.\-]+/g, '_').slice(0, 60);
 
         async function exportBackupZip(withVideos) {
